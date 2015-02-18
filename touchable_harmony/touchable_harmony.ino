@@ -71,7 +71,7 @@ int mux2Array[8][4] = {
 };
 
 // Eight MIDI-Accords as Array
-int akkordArray[8][8] = {
+int octaveArray[8][8] = {
   {12, 14, 16, 17, 19, 21, 23, 24},
   {24, 26, 28, 29, 31, 33, 35, 36},
   {36, 38, 40, 41, 43, 45, 47, 48},
@@ -178,7 +178,7 @@ void RealTimeHandler(byte realtimebyte) {
       // Read A
       valAOrig = analogRead(notePin);
       valA = map(valAOrig, 1023, 0, 0, 8);
-      noteA = akkordArray[baseA][valA];
+      noteA = octaveArray[baseA][valA];
 
       // Switch 
       digitalWrite(mux1PinA, mux1Array[i+8][0]);
@@ -189,7 +189,7 @@ void RealTimeHandler(byte realtimebyte) {
       // Read B
       valBOrig = analogRead(notePin);
       valB = map(valBOrig, 1023, 0, 0, 8);
-      noteB = akkordArray[baseB][valB];
+      noteB = octaveArray[baseB][valB];
 
       // 
       last_i = i;
@@ -228,7 +228,11 @@ void RealTimeHandler(byte realtimebyte) {
       Serial.println("");
       
       // Print a divider when reached last controller
-      if (last_i==7) { Serial.println(""); Serial.println(""); Serial.println("--------------------"); Serial.println(""); Serial.println(""); }
+      if (last_i==7) {
+        Serial.println(""); Serial.println("");
+        Serial.println("--------------------");
+        Serial.println(""); Serial.println("");
+      }
       
       // Write new configuration to Multiplexer 1
       digitalWrite(mux1PinA, mux1Array[i][0]);
