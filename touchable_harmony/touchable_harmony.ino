@@ -152,6 +152,7 @@ void RealTimeHandler(byte realtimebyte) {
 
   if (realtimebyte == CLOCK) { 
     
+     // Raise Counter
     counter++;
       
     // get Base Values
@@ -160,8 +161,10 @@ void RealTimeHandler(byte realtimebyte) {
     baseBOrig = analogRead(masterPinB);
     baseB = map(baseBOrig, 1023, 0, 0, 7);    
     
+    // Execute when MIDI sends a new beat
     if (counter == 24) { 
       
+      // Reset Counter
       counter = 0;
       
       // Switch LED
@@ -191,12 +194,12 @@ void RealTimeHandler(byte realtimebyte) {
       valB = map(valBOrig, 1023, 0, 0, 8);
       noteB = octaveArray[baseB][valB];
 
-      // 
+      // Raise i by one or reset it to 0, depending on current position
       last_i = i;
       i++;
       if (i>7) { i = 0; }
            
-      //
+      // Print Current Vars of A to Console and send Note via MIDI
       Serial.print("#A");
       Serial.print(last_i+1);
       if (valA>0) {
@@ -208,7 +211,7 @@ void RealTimeHandler(byte realtimebyte) {
         Serial.println("   OFF");
       }
       
-      //
+      // Print Current Vars of B to Console and send Note via MIDI
       Serial.print("#B");
       Serial.print(last_i+1);
       if (valB>0) {
@@ -240,8 +243,9 @@ void RealTimeHandler(byte realtimebyte) {
       digitalWrite(mux1PinC, mux1Array[i][2]);
       digitalWrite(mux1PinD, mux1Array[i][3]);
 
-    }     
-  } 
+    }
+    
+  }
 
   // Reset counter
   if (realtimebyte == START || realtimebyte == CONTINUE) {  counter = 0; } 
